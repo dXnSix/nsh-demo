@@ -2,7 +2,7 @@
 // in the middle. Lives outside the NSH repository: run it with any
 // checkout's or worktree's `nsh` (see README.md). The root App.tsx is the entry `nsh`
 // looks for; it imports this module.
-import { type JSX, mount, Scroll, signal, Text, View } from "nsh";
+import { type JSX, mount, signal, Text, View } from "nsh";
 import { isAvailable as hasWindow, Window } from "nsh/desktop";
 import { Borders } from "./pages/Borders";
 import { Density } from "./pages/Density";
@@ -17,6 +17,7 @@ import { TextValues } from "./pages/TextValues";
 import { Transforms } from "./pages/Transforms";
 import { Unknown } from "./pages/Unknown";
 import { Variants } from "./pages/Variants";
+import { HoverScroll } from "./ui";
 
 type Feature = { id: string; name: string; detail: string; page: () => JSX.Element };
 
@@ -109,11 +110,11 @@ function Sidebar() {
         <Text class="text-lg font-bold text-zinc-900">NSH demo</Text>
         <Text class="text-xs text-zinc-500">Features to try by hand</Text>
       </View>
-      <Scroll style={{ flex: 1 }} contentStyle={{ paddingHorizontal: 8, paddingBottom: 24, gap: 4 }}>
+      <HoverScroll style={{ paddingHorizontal: 8, paddingBottom: 24, gap: 4 }}>
         {groups.map((g) => (
           <SidebarGroup group={g} />
         ))}
-      </Scroll>
+      </HoverScroll>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import { List, signal, Text, View } from "nsh";
-import { Note, Page, Section, Segmented } from "../ui";
+import { hoverScrollBar, Note, Page, Section, Segmented } from "../ui";
 
 type Row = { header: string } | { item: string };
 
@@ -12,10 +12,13 @@ for (const letter of "ABCDEFGHIJ") {
 }
 
 const BAR = 44;
+// Headers are h-9, items h-11: the list's height before it reports one.
+const HEIGHT = rows.reduce((h, row) => h + ("header" in row ? 36 : 44), 0);
 const offsets = [0, BAR, -12] as const;
 
 export function Sticky() {
   const offset = signal<(typeof offsets)[number]>(BAR);
+  const scroll = hoverScrollBar(HEIGHT);
   return (
     <Page
       title="Sticky list headers"
@@ -28,8 +31,16 @@ export function Sticky() {
           onChange={(v) => offset.set(v)}
           format={(v) => (v === BAR ? `${v} (under the bar)` : String(v))}
         />
-        <View class="h-[420px] w-full max-w-[420px] overflow-hidden rounded-xl border border-zinc-300">
-          <List each={rows} stickyHeaderIndices={headers} stickyHeaderOffset={offset()} estimatedItemSize={44} style={{ flex: 1 }}>
+        <View class="h-[420px] w-full max-w-[420px] overflow-hidden rounded-xl border border-zinc-300" {...scroll.hover}>
+          <List
+            each={rows}
+            stickyHeaderIndices={headers}
+            stickyHeaderOffset={offset()}
+            estimatedItemSize={44}
+            style={{ flex: 1 }}
+            scrollbar={false}
+            onScroll={scroll.onScroll}
+          >
             {(row) => (
               <If
                 when={"header" in row()}
@@ -48,6 +59,7 @@ export function Sticky() {
           <View class="absolute inset-x-0 top-0 h-11 justify-center bg-white/70 px-4 border-b border-zinc-200" pointerEvents="none">
             <Text class="text-sm font-semibold text-zinc-900">Translucent bar ({BAR}pt)</Text>
           </View>
+          {scroll.bar()}
         </View>
         <Note>Scroll the list. With the offset at 44 the headers stick just under the bar; at 0 they slide under it; at -12 their top is cut off.</Note>
       </Section>
