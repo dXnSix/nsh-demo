@@ -1,20 +1,25 @@
-import { Text, View } from "nsh";
+import { type JSX, Text, View } from "nsh";
 import { Code, Note, Page, Section } from "../ui";
 
 // Classes NSH now refuses (a build warning and one runtime log each): they
 // set nothing, so each box looks as if the class were not there.
-const unknown: { cls: string; why: string }[] = [
-  { cls: "sticky top-4", why: "no native sticky positioning yet (top-4 still shifts the box)" },
-  { cls: "order-2", why: "the layout engine has no order" },
-  { cls: "transform-3d", why: "children are flattened into the parent's plane" },
-  { cls: "select-all", why: "no select-all-on-tap" },
-  { cls: "border-double border-4", why: "one line is drawn" },
-  { cls: "w-fit", why: "no intrinsic sizes (also min/max and h-, size-, min-*, max-*)" },
-  { cls: "snap-x snap-mandatory", why: "Scroll's snap props exist; the classes are not mapped yet" },
-  { cls: "-gap-4", why: "Tailwind has no negative gap" },
-  { cls: "p-1/2", why: "Tailwind has no padding fractions" },
-  { cls: "z-1.5", why: "z-* takes integers" },
+// Each class is written out literally so the build's class check sees it.
+const unknown: { cls: string; why: string; box: JSX.Element }[] = [
+  { cls: "sticky top-4", why: "no native sticky positioning yet (top-4 still shifts the box)", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 sticky top-4"><BoxLabel /></View> },
+  { cls: "order-2", why: "the layout engine has no order", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 order-2"><BoxLabel /></View> },
+  { cls: "transform-3d", why: "children are flattened into the parent's plane", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 transform-3d"><BoxLabel /></View> },
+  { cls: "select-all", why: "no select-all-on-tap", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 select-all"><BoxLabel /></View> },
+  { cls: "border-double border-4", why: "one line is drawn", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 border-double border-4"><BoxLabel /></View> },
+  { cls: "w-fit", why: "no intrinsic sizes (also min/max and h-, size-, min-*, max-*)", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 w-fit"><BoxLabel /></View> },
+  { cls: "snap-x snap-mandatory", why: "Scroll's snap props exist; the classes are not mapped yet", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 snap-x snap-mandatory"><BoxLabel /></View> },
+  { cls: "-gap-4", why: "Tailwind has no negative gap", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 -gap-4"><BoxLabel /></View> },
+  { cls: "p-1/2", why: "Tailwind has no padding fractions", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 p-1/2"><BoxLabel /></View> },
+  { cls: "z-1.5", why: "z-* takes integers", box: <View class="h-10 w-28 items-center justify-center rounded-md bg-zinc-200 z-1.5"><BoxLabel /></View> },
 ];
+
+function BoxLabel() {
+  return <Text class="text-[11px] text-zinc-600">box</Text>;
+}
 
 export function Unknown() {
   return (
@@ -26,9 +31,7 @@ export function Unknown() {
         <View class="gap-3">
           {unknown.map((u) => (
             <View class="flex flex-row items-center gap-3">
-              <View class={`h-10 w-28 items-center justify-center rounded-md bg-zinc-200 ${u.cls}`}>
-                <Text class="text-[11px] text-zinc-600">box</Text>
-              </View>
+              {u.box}
               <View class="gap-1">
                 <Code>{u.cls}</Code>
                 <Text class="text-xs text-zinc-500">{u.why}</Text>
