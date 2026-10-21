@@ -79,12 +79,12 @@ the workflow by hand (Actions → Pages → Run workflow) with that branch.
 
 ## Shaders
 
-The Shaders pages use `<Shader>`, `createShader`, `shaderSupport` and `.wgsl` imports, which only an NSH with shader
-support has (the `refactor/youthful-wozniak-d49acb` worktree until it lands). An `nsh` without them stops at the
-bundle (`` `nsh` has no export `Shader` ``), so run, check and test the whole demo with that worktree's build:
+The Shaders pages use `<Shader>`, `createShader`, `shaderSupport` and `.wgsl` imports, which the fork's `main` has
+since dXnSix/nsh#19. An older `nsh` stops at the bundle (`` `nsh` has no export `Shader` ``), so run, check and test
+the demo with a build of that `main` (or a later branch):
 
 ```bash
-cd path/to/nsh/.claude/worktrees/youthful-wozniak-d49acb
+cd path/to/nsh && git checkout main && git pull
 cargo build -p nsh-cli
 ./target/debug/nsh run path/to/nsh-demo --target macos --window-size 1440x900
 ```

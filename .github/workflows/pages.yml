@@ -31,9 +31,9 @@ concurrency:
 
 env:
   NSH_REPO: dXnSix/nsh
-  # The NSH the demo's pages are written against. Move it to `main` once the
-  # branch is merged there.
-  NSH_REF: pr/tailwind-browser-parity
+  # The NSH the demo's pages are written against: the fork's main, which has
+  # the Tailwind and shader work the pages show.
+  NSH_REF: main
 
 jobs:
   build:
