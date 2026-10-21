@@ -1,0 +1,106 @@
+# Builds the demo for the web and serves it on GitHub Pages: on every push to
+# main, and by hand (Actions → Pages → Run workflow, optionally with another
+# NSH branch or commit).
+#
+# As locally, the `nsh` binary decides which NSH is tested: this builds
+# `nsh-cli` from NSH_REPO at NSH_REF, then `nsh package --target web`, which
+# compiles the web runtime (wasm) in that same checkout. The site is
+# `output/NSH Demo/` (index.html and files named by their content, with
+# relative paths, so it works under /nsh-demo/).
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      nsh_ref:
+        description: NSH branch, tag or commit to build with (default NSH_REF below)
+        required: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer push replaces a queued one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  NSH_REPO: dXnSix/nsh
+  # The NSH the demo's pages are written against. Move it to `main` once the
+  # branch is merged there.
+  NSH_REF: pr/tailwind-browser-parity
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Side by side: `nsh test` finds `*.test.tsx` anywhere under the app, so
+      # NSH's own examples must not sit inside the demo.
+      - name: Check out the demo
+        uses: actions/checkout@v4
+        with:
+          path: demo
+
+      - name: Check out NSH
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.NSH_REPO }}
+          ref: ${{ inputs.nsh_ref || env.NSH_REF }}
+          path: nsh
+
+      # QuickJS is C: bindgen needs libclang, and its WebAssembly build needs
+      # upstream clang and llvm-ar (as in NSH's release.yml).
+      - name: Install clang and LLVM
+        run: sudo apt-get update && sudo apt-get install -y clang llvm libclang-dev
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache Cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: nsh -> target
+
+      - name: Build nsh
+        working-directory: nsh
+        run: |
+          rustup target add wasm32-unknown-unknown
+          cargo build -p nsh-cli
+          echo "NSH=$PWD/target/debug/nsh" >> "$GITHUB_ENV"
+          echo "CC_wasm32_unknown_unknown=/usr/bin/clang" >> "$GITHUB_ENV"
+          echo "AR_wasm32_unknown_unknown=/usr/bin/llvm-ar" >> "$GITHUB_ENV"
+
+      - name: Type check
+        working-directory: demo
+        run: $NSH check .
+
+      - name: Test
+        working-directory: demo
+        run: $NSH test .
+
+      - name: Package for the web
+        working-directory: demo
+        run: $NSH package --target web -o output .
+
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: demo/output/NSH Demo
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

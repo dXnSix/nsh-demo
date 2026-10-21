@@ -61,6 +61,22 @@ nshp test path/to/nsh-demo    # headless: every sidebar item opens its page
 The "Now unknown" page uses classes NSH refuses on purpose; the warnings for them (`unknown classes: sticky`, ...) are
 expected.
 
+## Build for the web
+
+```bash
+nshp package --target web -o output path/to/nsh-demo
+```
+
+This writes a static site to `output/NSH Demo/` (`index.html` and files named by their content, relative paths, so any
+web server or subpath works; `--run` also serves it locally). Building the web runtime needs a clang that targets wasm32
+and `llvm-ar`: on macOS, Homebrew's (`brew install llvm`, then
+`CC_wasm32_unknown_unknown=$(brew --prefix llvm)/bin/clang AR_wasm32_unknown_unknown=$(brew --prefix llvm)/bin/llvm-ar`
+before the command); Apple's clang does not target wasm32.
+
+Every push to `main` builds and deploys it to GitHub Pages (`.github/workflows/pages.yml`): it builds `nsh-cli` from
+the NSH fork at the branch `NSH_REF` names, checks and tests the demo, then packages it. To try another NSH branch, run
+the workflow by hand (Actions → Pages → Run workflow) with that branch.
+
 ## Add a feature
 
 1. Add `src/pages/<Feature>.tsx`, built from `src/ui.tsx` (`Page`, `Section`, `Compare` for now / before pairs, `Code`, `Note`,
