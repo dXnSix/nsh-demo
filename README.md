@@ -1,6 +1,6 @@
 # NSH demo
 
-An app for trying NSH features by hand: a sidebar of feature groups (Tailwind, SVG, Images, Lists) that expand and
+An app for trying NSH features by hand: a sidebar of feature groups (Tailwind, Shaders, SVG, Images, Lists) that expand and
 collapse, and the selected feature's page in the middle. Each
 Tailwind page compares what a class does now ("Now", its browser meaning) with what NSH did before (drawn with styles
 that reproduce the old result).
@@ -77,6 +77,21 @@ Every push to `main` builds and deploys it to GitHub Pages (`.github/workflows/p
 the NSH fork at the branch `NSH_REF` names, checks and tests the demo, then packages it. To try another NSH branch, run
 the workflow by hand (Actions → Pages → Run workflow) with that branch.
 
+## Shaders
+
+The Shaders pages use `<Shader>`, `createShader`, `shaderSupport` and `.wgsl` imports, which only an NSH with shader
+support has (the `refactor/youthful-wozniak-d49acb` worktree until it lands). An `nsh` without them stops at the
+bundle (`` `nsh` has no export `Shader` ``), so run, check and test the whole demo with that worktree's build:
+
+```bash
+cd path/to/nsh/.claude/worktrees/youthful-wozniak-d49acb
+cargo build -p nsh-cli
+./target/debug/nsh run path/to/nsh-demo --target macos --window-size 1440x900
+```
+
+The shaders are `.wgsl` files in `src/pages/shaders/`; `.nsh/types` declares each one's uniforms. Shaders draw on
+macOS, iOS, Android 13 and later, the web, Windows and Linux.
+
 ## Add a feature
 
 1. Add `src/pages/<Feature>.tsx`, built from `src/ui.tsx` (`Page`, `Section`, `Compare` for now / before pairs, `Code`, `Note`,
@@ -99,6 +114,10 @@ the workflow by hand (Actions → Pages → Run workflow) with that branch.
 | | Images: object-fit | every `object-*` with a large and a small image, `resizeMode="scale-down"` |
 | | Variants and selection | `group-hover:` vs `last:`, `selection:bg-*` |
 | | Now unknown | classes that now warn and set nothing |
+| Shaders | Shader fills | `<Shader>` filled by `nsh.time` (aurora) and noise, children over the fill, corners, borders and shadows |
+| | Glass icons | glass in the style of react-bits' GlassIcons over the shader's own content; a glass card dragged over moving lights |
+| | Animated uniforms | a spring on `radius`, a color interpolation, a drag on a `vec2f`, a two-step timing |
+| | WGSL sources | `.wgsl` imports and their uniforms, a live `createShader` editor with its errors, `shaderSupport()` |
 | SVG | SVG images | multicolor SVGs, sharp at any size, resize modes, tint, blur, classes |
 | Images | Multi-resolution images | `@1x` / `@2x` / `@3x` siblings (red / green / blue), the screen's pixel ratio |
 | Lists | Sticky list headers | `stickyHeaderIndices` + `stickyHeaderOffset` under a translucent bar (0, 44, -12) |

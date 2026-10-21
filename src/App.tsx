@@ -7,10 +7,14 @@ import { isAvailable as hasWindow, Window } from "nsh/desktop";
 import { Borders } from "./pages/Borders";
 import { Density } from "./pages/Density";
 import { Effects } from "./pages/Effects";
+import { GlassIcons } from "./pages/GlassIcons";
 import { Inheritance } from "./pages/Inheritance";
 import { Layout } from "./pages/Layout";
 import { ObjectFit } from "./pages/ObjectFit";
 import { Rtl } from "./pages/Rtl";
+import { ShaderFills } from "./pages/ShaderFills";
+import { ShaderSources } from "./pages/ShaderSources";
+import { ShaderUniforms } from "./pages/ShaderUniforms";
 import { Sticky } from "./pages/Sticky";
 import { Svg } from "./pages/Svg";
 import { TextValues } from "./pages/TextValues";
@@ -40,6 +44,16 @@ const groups: Group[] = [
       { id: "object-fit", name: "Images: object-fit", detail: "object-none, object-scale-down", page: ObjectFit },
       { id: "variants", name: "Variants and selection", detail: "group order, selection:bg-*", page: Variants },
       { id: "unknown", name: "Now unknown", detail: "classes that warn instead", page: Unknown },
+    ],
+  },
+  {
+    id: "shaders",
+    title: "Shaders",
+    features: [
+      { id: "shader-fills", name: "Shader fills", detail: "nsh.time, noise, children over it", page: ShaderFills },
+      { id: "glass-icons", name: "Glass icons", detail: "glass over self-drawn content", page: GlassIcons },
+      { id: "shader-uniforms", name: "Animated uniforms", detail: "springs, color interpolation, drags", page: ShaderUniforms },
+      { id: "shader-sources", name: "WGSL sources", detail: ".wgsl imports, createShader", page: ShaderSources },
     ],
   },
   {
