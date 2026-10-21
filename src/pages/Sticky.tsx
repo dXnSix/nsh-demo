@@ -33,6 +33,7 @@ export function Sticky() {
         />
         <View class="h-[420px] w-full max-w-[420px] overflow-hidden rounded-xl border border-zinc-300" {...scroll.hover}>
           <List
+            ref={scroll.ref}
             each={rows}
             stickyHeaderIndices={headers}
             stickyHeaderOffset={offset()}

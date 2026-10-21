@@ -1,23 +1,27 @@
 // Shared building blocks of the demo pages: a page, a section, a pair of
 // panels comparing what a class does now with what NSH did before, and a
 // code label.
-import { type Bounds, type JSX, Scroll, type ScrollEvent, signal, Text, View } from "nsh";
+import { type Bounds, type JSX, Scroll, type ScrollEvent, signal, Text, View, type YNode } from "nsh";
 
 /**
  * A vertical scroll bar the app draws for a scroll view or list: it shows
  * while the mouse is over the view and fades when the mouse leaves (NSH's own
- * bar shows only while scrolling). Turn the view's indicator off
- * (`scrollbar={false}`) and pass it `onScroll`; spread `hover` on the view
- * around it and put `bar()` last in that view. `contentHeight` is the content's
- * height until the view reports it (a list's rows of known heights); a
- * `Scroll` reports it through `onContentLayout` on a view around its content.
+ * bar shows only while scrolling), and dragging it scrolls the view. Turn the
+ * view's indicator off (`scrollbar={false}`) and pass it `ref` and `onScroll`;
+ * spread `hover` on the view around it and put `bar()` last in that view.
+ * `contentHeight` is the content's height until the view reports it (a list's
+ * rows of known heights); a `Scroll` reports it through `onContentLayout` on a
+ * view around its content.
  */
 export function hoverScrollBar(contentHeight = 0) {
   const hovered = signal(false);
+  const dragging = signal(false);
   const view = signal(0);
   const content = signal(contentHeight);
   const offset = signal(0);
   const MARGIN = 2;
+  let node: YNode | null = null;
+  let drag = { y: 0, offset: 0 };
   // The thumb's top and length, or null when everything fits.
   const thumb = () => {
     const [v, c] = [view(), content()];
@@ -25,13 +29,17 @@ export function hoverScrollBar(contentHeight = 0) {
     const track = v - 2 * MARGIN;
     const len = Math.max(32, (track * v) / c);
     const t = Math.min(Math.max(offset() / (c - v), 0), 1);
-    return { top: MARGIN + t * (track - len), height: len };
+    return { top: MARGIN + t * (track - len), height: len, travel: track - len };
   };
+  const shown = () => (hovered() || dragging()) && thumb() !== null;
   return {
     hover: {
       onHoverIn: () => hovered.set(true),
       onHoverOut: () => hovered.set(false),
       onLayout: (b: Bounds) => view.set(b.size.height),
+    },
+    ref: (n: YNode) => {
+      node = n;
     },
     onScroll: (e: ScrollEvent) => {
       offset.set(e.offset.y);
@@ -39,22 +47,43 @@ export function hoverScrollBar(contentHeight = 0) {
       view.set(e.size.height);
     },
     onContentLayout: (b: Bounds) => content.set(b.size.height),
+    // A strip wider than the bar, so it is easy to grab; the content moves
+    // the other way, as much as keeps the thumb under the pointer.
     bar: () => (
       <View
-        pointerEvents="none"
-        class={`absolute right-0.5 w-1.5 rounded-full bg-zinc-400/80 transition-opacity duration-300 ${hovered() && thumb() ? "opacity-100" : "opacity-0"}`}
+        pointerEvents={shown() ? "auto" : "none"}
+        class="absolute right-0 w-3 items-center"
         style={{ top: thumb()?.top ?? 0, height: thumb()?.height ?? 0 }}
-      />
+        onStartShouldSetResponder={() => true}
+        onResponderGrant={(e) => {
+          drag = { y: e.pageY, offset: offset() };
+          dragging.set(true);
+          return true;
+        }}
+        onResponderMove={(e) => {
+          const t = thumb();
+          if (!t || t.travel <= 0) return;
+          const max = content() - view();
+          const y = drag.offset + ((e.pageY - drag.y) * max) / t.travel;
+          node?.scrollTo({ y: Math.min(Math.max(y, 0), max), animated: false });
+        }}
+        onResponderRelease={() => dragging.set(false)}
+        onResponderTerminate={() => dragging.set(false)}
+      >
+        <View
+          class={`h-full w-1.5 rounded-full transition-opacity duration-300 ${dragging() ? "bg-zinc-500" : "bg-zinc-400/80"} ${shown() ? "opacity-100" : "opacity-0"}`}
+        />
+      </View>
     ),
   };
 }
 
-/** A vertical `Scroll` whose bar shows while the mouse is over it (`hoverScrollBar`); `class` and `style` go on its content. */
+/** A vertical `Scroll` whose bar shows while the mouse is over it and drags (`hoverScrollBar`); `class` and `style` go on its content. */
 export function HoverScroll(props: { class?: string; style?: Record<string, unknown>; children: JSX.Element }) {
   const s = hoverScrollBar();
   return (
     <View class="flex-1" {...s.hover}>
-      <Scroll style={{ flex: 1 }} scrollbar={false} onScroll={s.onScroll}>
+      <Scroll ref={s.ref} style={{ flex: 1 }} scrollbar={false} onScroll={s.onScroll}>
         <View class={props.class} style={props.style} onLayout={s.onContentLayout}>
           {props.children}
         </View>
