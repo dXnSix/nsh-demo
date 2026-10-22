@@ -19,6 +19,7 @@ test("every sidebar item opens its page", async () => {
     ["shader-sources", "WGSL sources"],
     ["shader-effects", "Shader effects"],
     ["shader-backdrops", "Backdrops"],
+    ["shader-transitions", "Shader transitions"],
     ["svg", "SVG images"],
     ["density", "Multi-resolution images"],
     ["sticky", "Sticky list headers"],

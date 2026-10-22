@@ -89,8 +89,8 @@ cargo build -p nsh-cli
 ./target/debug/nsh run path/to/nsh-demo --target macos --window-size 1440x900
 ```
 
-The Shader effects and Backdrops pages also use `<ShaderEffect>` and `sample_backdrop`, which come with the shader
-effects work (dXnSix/nsh branch `refactor/youthful-wozniak-d49acb` until it merges into the fork's `main`).
+The Shader effects and Backdrops pages use `<ShaderEffect>` and `sample_backdrop` (the fork's `main` since
+dXnSix/nsh#20); the Shader transitions page uses `<ShaderTransition>`, which comes with the shader transitions work.
 
 The shaders are `.wgsl` files in `src/pages/shaders/`; `.nsh/types` declares each one's uniforms. Shaders draw on
 macOS, iOS, Android 13 and later, the web, Windows and Linux.
@@ -123,6 +123,7 @@ macOS, iOS, Android 13 and later, the web, Windows and Linux.
 | | WGSL sources | `.wgsl` imports and their uniforms, a live `createShader` editor with its errors, `shaderSupport()` |
 | | Shader effects | `<ShaderEffect>`: a card bent by a wave that `progress` moves (its button still takes presses), `maxSampleOffset`, pixelation |
 | | Backdrops | `sample_backdrop`: frosted glass over stripes and a title, a lens you drag over words |
+| | Shader transitions | `<ShaderTransition>`: a growing circle, an angled wipe, pixels, the cross-fade fallback |
 | SVG | SVG images | multicolor SVGs, sharp at any size, resize modes, tint, blur, classes |
 | Images | Multi-resolution images | `@1x` / `@2x` / `@3x` siblings (red / green / blue), the screen's pixel ratio |
 | Lists | Sticky list headers | `stickyHeaderIndices` + `stickyHeaderOffset` under a translucent bar (0, 44, -12) |
