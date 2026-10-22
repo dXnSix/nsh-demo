@@ -89,6 +89,10 @@ cargo build -p nsh-cli
 ./target/debug/nsh run path/to/nsh-demo --target macos --window-size 1440x900
 ```
 
+The Shader effects and Backdrops pages use `<ShaderEffect>` and `sample_backdrop` (the fork's `main` since
+dXnSix/nsh#20); the Shader transitions page uses `<ShaderTransition>` and a Dialog's shader `animation` (since
+dXnSix/nsh#21).
+
 The shaders are `.wgsl` files in `src/pages/shaders/`; `.nsh/types` declares each one's uniforms. Shaders draw on
 macOS, iOS, Android 13 and later, the web, Windows and Linux.
 
@@ -118,6 +122,9 @@ macOS, iOS, Android 13 and later, the web, Windows and Linux.
 | | Glass icons | glass in the style of react-bits' GlassIcons over the shader's own content; a glass card dragged over moving lights |
 | | Animated uniforms | a spring on `radius`, a color interpolation, a drag on a `vec2f`, a two-step timing |
 | | WGSL sources | `.wgsl` imports and their uniforms, a live `createShader` editor with its errors, `shaderSupport()` |
+| | Shader effects | `<ShaderEffect>`: a card bent by a wave that `progress` moves (its button still takes presses), `maxSampleOffset`, pixelation |
+| | Backdrops | `sample_backdrop`: frosted glass over stripes and a title, a lens you drag over words |
+| | Shader transitions | `<ShaderTransition>`: a growing circle, an angled wipe, pixels, the cross-fade fallback; a dialog through a shader |
 | SVG | SVG images | multicolor SVGs, sharp at any size, resize modes, tint, blur, classes |
 | Images | Multi-resolution images | `@1x` / `@2x` / `@3x` siblings (red / green / blue), the screen's pixel ratio |
 | Lists | Sticky list headers | `stickyHeaderIndices` + `stickyHeaderOffset` under a translucent bar (0, 44, -12) |
