@@ -12,6 +12,8 @@ import { Inheritance } from "./pages/Inheritance";
 import { Layout } from "./pages/Layout";
 import { ObjectFit } from "./pages/ObjectFit";
 import { Rtl } from "./pages/Rtl";
+import { ShaderBackdrops } from "./pages/ShaderBackdrops";
+import { ShaderEffects } from "./pages/ShaderEffects";
 import { ShaderFills } from "./pages/ShaderFills";
 import { ShaderSources } from "./pages/ShaderSources";
 import { ShaderUniforms } from "./pages/ShaderUniforms";
@@ -54,6 +56,8 @@ const groups: Group[] = [
       { id: "glass-icons", name: "Glass icons", detail: "glass over self-drawn content", page: GlassIcons },
       { id: "shader-uniforms", name: "Animated uniforms", detail: "springs, color interpolation, drags", page: ShaderUniforms },
       { id: "shader-sources", name: "WGSL sources", detail: ".wgsl imports, createShader", page: ShaderSources },
+      { id: "shader-effects", name: "Shader effects", detail: "children through a shader", page: ShaderEffects },
+      { id: "shader-backdrops", name: "Backdrops", detail: "frosted glass, a lens you drag", page: ShaderBackdrops },
     ],
   },
   {

@@ -17,6 +17,8 @@ test("every sidebar item opens its page", async () => {
     ["glass-icons", "Glass icons"],
     ["shader-uniforms", "Animated uniforms"],
     ["shader-sources", "WGSL sources"],
+    ["shader-effects", "Shader effects"],
+    ["shader-backdrops", "Backdrops"],
     ["svg", "SVG images"],
     ["density", "Multi-resolution images"],
     ["sticky", "Sticky list headers"],
