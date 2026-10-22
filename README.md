@@ -125,6 +125,7 @@ macOS, iOS, Android 13 and later, the web, Windows and Linux.
 | | Shader effects | `<ShaderEffect>`: a card bent by a wave that `progress` moves (its button still takes presses), `maxSampleOffset`, pixelation |
 | | Backdrops | `sample_backdrop`: frosted glass over stripes and a title, a lens you drag over words |
 | | Shader transitions | `<ShaderTransition>`: a growing circle, an angled wipe, pixels, the cross-fade fallback; a dialog through a shader |
+| | Screen shaders | `<ScreenEffect>`: the whole screen in grayscale, scanlines or blocks, dialogs included; `<ScreenTransition>`: day to night through a ripple, a wipe, pixels or a fade |
 | SVG | SVG images | multicolor SVGs, sharp at any size, resize modes, tint, blur, classes |
 | Images | Multi-resolution images | `@1x` / `@2x` / `@3x` siblings (red / green / blue), the screen's pixel ratio |
 | Lists | Sticky list headers | `stickyHeaderIndices` + `stickyHeaderOffset` under a translucent bar (0, 44, -12) |

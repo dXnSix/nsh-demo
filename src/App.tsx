@@ -14,6 +14,7 @@ import { Inheritance } from "./pages/Inheritance";
 import { Layout } from "./pages/Layout";
 import { ObjectFit } from "./pages/ObjectFit";
 import { Rtl } from "./pages/Rtl";
+import { ScreenShaders } from "./pages/ScreenShaders";
 import { ShaderBackdrops } from "./pages/ShaderBackdrops";
 import { ShaderEffects } from "./pages/ShaderEffects";
 import { ShaderFills } from "./pages/ShaderFills";
@@ -70,6 +71,7 @@ const groups: Group[] = [
       { id: "shader-effects", name: "Shader effects", detail: "children through a shader", page: ShaderEffects },
       { id: "shader-backdrops", name: "Backdrops", detail: "frosted glass, a lens you drag", page: ShaderBackdrops },
       { id: "shader-transitions", name: "Shader transitions", detail: "reveal, wipe, pixels, cross-fade", page: ShaderTransitions },
+      { id: "screen-shaders", name: "Screen shaders", detail: "the whole screen through a shader", page: ScreenShaders },
     ],
   },
   {
