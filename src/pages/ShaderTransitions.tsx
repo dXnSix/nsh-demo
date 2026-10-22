@@ -1,4 +1,5 @@
 import { ShaderTransition, shaderSupport, signal, Text, View } from "nsh";
+import { Dialog } from "nsh/base";
 import { Code, Note, Page, Section, Segmented } from "../ui";
 import pixels from "./shaders/pixels.wgsl";
 import reveal from "./shaders/reveal.wgsl";
@@ -35,6 +36,7 @@ export function ShaderTransitions() {
   const b = signal(0);
   const c = signal(0);
   const d = signal(0);
+  const open = signal(false);
   const duration = signal<(typeof durations)[number]>(700);
   const support = shaderSupport();
   return (
@@ -70,6 +72,25 @@ export function ShaderTransitions() {
           <Slide index={d() + 3} />
         </ShaderTransition>
         <Next label="Cross-fade" onPress={() => d.set(d() + 1)} />
+      </Section>
+
+      <Section
+        title="A dialog through a shader"
+        note="A Dialog's (or a NavPage's) animation takes { shader, uniforms, duration }: what is behind it is sample_from, the dialog sample_to, and nsh.progress how much of it shows (0 → 1 as it opens, 1 → 0 as it closes)."
+      >
+        <Next label="Open the dialog" onPress={() => open.set(true)} />
+        <Dialog
+          open={open()}
+          onOpenChange={(o) => open.set(o)}
+          animation={{ shader: reveal, uniforms: { edge: 4 }, duration: 700 }}
+          backdropClass="bg-black/45"
+          class="m-auto w-80 max-w-[90%] gap-3 rounded-2xl bg-violet-600 p-5"
+        >
+          <Text class="text-2xl font-extrabold text-white">Revealed</Text>
+          <Text class="text-sm text-white/85">It came through reveal.wgsl and goes back the same way.</Text>
+          <Next label="Close" onPress={() => open.set(false)} />
+        </Dialog>
+        <Code>{`<Dialog animation={{ shader: reveal, uniforms: { edge: 4 }, duration: 700 }}>`}</Code>
       </Section>
 
       <Note>{`shaderSupport().transition here: ${String(support.transition)} ("live" or "snapshot": the children change through the shader; false: they change at once).`}</Note>
