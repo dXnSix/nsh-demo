@@ -19,7 +19,7 @@ export function ShaderBackdrops() {
       title="Backdrops"
       intro="A shader that calls sample_backdrop(p) reads what is behind its view: the views drawn before it, under it. Its own background and children are not in it; its children draw over what it returns."
     >
-      <Section title="Frosted glass" note="frost.wgsl averages the backdrop over a ring of samples and lightens it. Pick a radius.">
+      <Section title="Frosted glass" note="frost.wgsl blurs the backdrop (a Gaussian, the radius its sigma in points, as CSS's blur) and lightens it. Pick a radius.">
         <Segmented options={radii} value={radius} onChange={(v) => radius.set(v)} format={(v) => `radius ${v}`} />
         <View class="h-56 max-w-[640px] overflow-hidden rounded-2xl">
           <View class="absolute inset-0 flex-row">
