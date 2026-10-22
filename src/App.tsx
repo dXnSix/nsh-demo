@@ -5,8 +5,10 @@
 import { type JSX, mount, signal, Text, View } from "nsh";
 import { isAvailable as hasWindow, Window } from "nsh/desktop";
 import { Borders } from "./pages/Borders";
+import { CollapsingHeader } from "./pages/CollapsingHeader";
 import { Density } from "./pages/Density";
 import { Effects } from "./pages/Effects";
+import { FloatingHeader } from "./pages/FloatingHeader";
 import { GlassIcons } from "./pages/GlassIcons";
 import { Inheritance } from "./pages/Inheritance";
 import { Layout } from "./pages/Layout";
@@ -30,6 +32,14 @@ type Group = { id: string; title: string; features: Feature[] };
 
 /** The features, by group; add a page under pages/ and an entry here. */
 const groups: Group[] = [
+  {
+    id: "scrolling",
+    title: "Scrolling",
+    features: [
+      { id: "floating-header", name: "Floating header", detail: "diffClamp, animated stickyHeaderOffset", page: FloatingHeader },
+      { id: "collapsing-header", name: "Collapsing header", detail: "sliver header, virtual list, footer", page: CollapsingHeader },
+    ],
+  },
   {
     id: "tailwind",
     title: "Tailwind",

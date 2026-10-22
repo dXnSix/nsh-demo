@@ -3,6 +3,8 @@ import { expect, open, test } from "nsh/test";
 test("every sidebar item opens its page", async () => {
   const app = await open("../App.tsx");
   for (const [id, title] of [
+    ["floating-header", "Floating header"],
+    ["collapsing-header", "Collapsing header"],
     ["layout", "Layout"],
     ["rtl", "Right to left"],
     ["inheritance", "Inheritance"],
