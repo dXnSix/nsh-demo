@@ -1,4 +1,4 @@
-# NSH demo
+# NSH lab
 
 An app for trying NSH features by hand: a sidebar of feature groups (Tailwind, Shaders, SVG, Images, Lists) that expand and
 collapse, and the selected feature's page in the middle. Each
@@ -18,10 +18,10 @@ cd path/to/nsh
 cargo build -p nsh-cli
 ```
 
-Then run the demo with **that build's `nsh`, by its full path** (hot reload: saving a file here updates the app):
+Then run the lab with **that build's `nsh`, by its full path** (hot reload: saving a file here updates the app):
 
 ```bash
-path/to/nsh/target/debug/nsh run path/to/nsh-demo --target macos --window-size 1440x900
+path/to/nsh/target/debug/nsh run path/to/nsh-lab --target macos --window-size 1440x900
 ```
 
 `--window-size 1440x900` opens the macOS window centered at that size (without it, 1200×800), wide enough for
@@ -40,10 +40,10 @@ alias nshp=path/to/nsh/target/debug/nsh
 Other targets:
 
 ```bash
-nshp run path/to/nsh-demo --target web       # in the browser
-nshp run path/to/nsh-demo --target ios       # iOS simulator (needs the nsh-ios-host sim build)
-nshp run path/to/nsh-demo --target android   # emulator / device (needs `cargo xtask android --dev`)
-nshp run path/to/nsh-demo                    # Catalyst (the default on macOS; a phone-sized window)
+nshp run path/to/nsh-lab --target web       # in the browser
+nshp run path/to/nsh-lab --target ios       # iOS simulator (needs the nsh-ios-host sim build)
+nshp run path/to/nsh-lab --target android   # emulator / device (needs `cargo xtask android --dev`)
+nshp run path/to/nsh-lab                    # Catalyst (the default on macOS; a phone-sized window)
 ```
 
 The first `run` for a target builds that target's development host in the checkout, which takes a while.
@@ -54,8 +54,8 @@ To test another NSH (the fork's `main`, another worktree), use that checkout's `
 ## Check it
 
 ```bash
-nshp check path/to/nsh-demo   # type check
-nshp test path/to/nsh-demo    # headless: every sidebar item opens its page
+nshp check path/to/nsh-lab   # type check
+nshp test path/to/nsh-lab    # headless: every sidebar item opens its page
 ```
 
 The "Now unknown" page uses classes NSH refuses on purpose; the warnings for them (`unknown classes: sticky`, ...) are
@@ -64,29 +64,29 @@ expected.
 ## Build for the web
 
 ```bash
-nshp package --target web -o output path/to/nsh-demo
+nshp package --target web -o output path/to/nsh-lab
 ```
 
-This writes a static site to `output/NSH Demo/` (`index.html` and files named by their content, relative paths, so any
+This writes a static site to `output/NSH Lab/` (`index.html` and files named by their content, relative paths, so any
 web server or subpath works; `--run` also serves it locally). Building the web runtime needs a clang that targets wasm32
 and `llvm-ar`: on macOS, Homebrew's (`brew install llvm`, then
 `CC_wasm32_unknown_unknown=$(brew --prefix llvm)/bin/clang AR_wasm32_unknown_unknown=$(brew --prefix llvm)/bin/llvm-ar`
 before the command); Apple's clang does not target wasm32.
 
 Every push to `main` builds and deploys it to GitHub Pages (`.github/workflows/pages.yml`): it builds `nsh-cli` from
-the NSH fork at the branch `NSH_REF` names, checks and tests the demo, then packages it. To try another NSH branch, run
+the NSH fork at the branch `NSH_REF` names, checks and tests the lab, then packages it. To try another NSH branch, run
 the workflow by hand (Actions → Pages → Run workflow) with that branch.
 
 ## Shaders
 
 The Shaders pages use `<Shader>`, `createShader`, `shaderSupport` and `.wgsl` imports, which the fork's `main` has
 since dXnSix/nsh#19. An older `nsh` stops at the bundle (`` `nsh` has no export `Shader` ``), so run, check and test
-the demo with a build of that `main` (or a later branch):
+the lab with a build of that `main` (or a later branch):
 
 ```bash
 cd path/to/nsh && git checkout main && git pull
 cargo build -p nsh-cli
-./target/debug/nsh run path/to/nsh-demo --target macos --window-size 1440x900
+./target/debug/nsh run path/to/nsh-lab --target macos --window-size 1440x900
 ```
 
 The Shader effects and Backdrops pages use `<ShaderEffect>` and `sample_backdrop` (the fork's `main` since

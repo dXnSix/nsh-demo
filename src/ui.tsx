@@ -1,4 +1,4 @@
-// Shared building blocks of the demo pages: a page, a section, a pair of
+// Shared building blocks of the lab pages: a page, a section, a pair of
 // panels comparing what a class does now with what NSH did before, and a
 // code label.
 import { type Bounds, type JSX, Scroll, type ScrollEvent, signal, Text, View, type YNode } from "nsh";
@@ -93,7 +93,7 @@ export function HoverScroll(props: { class?: string; style?: Record<string, unkn
   );
 }
 
-/** A demo page: a title, what it shows, then its sections. */
+/** A lab page: a title, what it shows, then its sections. */
 export function Page(props: { title: string; intro: string; children: JSX.Element }) {
   return (
     <HoverScroll style={{ padding: 28, gap: 28, paddingBottom: 64 }}>

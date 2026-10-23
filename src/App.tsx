@@ -1,4 +1,4 @@
-// NSH feature demo: a sidebar of features; the selected one's page renders
+// NSH feature lab: a sidebar of features; the selected one's page renders
 // in the middle. Lives outside the NSH repository: run it with any
 // checkout's or worktree's `nsh` (see README.md). The root App.tsx is the entry `nsh`
 // looks for; it imports this module.
@@ -139,7 +139,7 @@ function Sidebar() {
   return (
     <View class="w-64 border-r border-zinc-200 bg-zinc-50">
       <View class="px-4 pt-5 pb-3">
-        <Text class="text-lg font-bold text-zinc-900">NSH demo</Text>
+        <Text class="text-lg font-bold text-zinc-900">NSH lab</Text>
         <Text class="text-xs text-zinc-500">Features to try by hand</Text>
       </View>
       <HoverScroll style={{ paddingHorizontal: 8, paddingBottom: 24, gap: 4 }}>
@@ -168,6 +168,6 @@ function App() {
 // The window's size comes from `nsh run --window-size 1440x900` (README.md):
 // the host then opens it centered at that size, which resizing it from here
 // would undo (a resize keeps the left edge).
-if (hasWindow) Window.setTitle("NSH Demo");
+if (hasWindow) Window.setTitle("NSH Lab");
 
 mount(App);

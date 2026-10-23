@@ -1,6 +1,6 @@
 # AGENTS.md
 
-NSH demo: an app for trying Native Shell (NSH) features by hand. A sidebar of feature groups that expand and
+NSH lab: an app for trying Native Shell (NSH) features by hand. A sidebar of feature groups that expand and
 collapse; the selected feature's page renders in the middle. Pages show what a feature does, with live examples,
 and for changed behavior the result now beside the result before.
 
@@ -159,5 +159,5 @@ pictures from elsewhere; describe them here.
    and what it shows matches what its intro and notes claim. If NSH's behavior differs from the page's claim, find out
    which is wrong: fix the page, or report the NSH bug.
 4. README.md's page table lists the page.
-5. Commits here are small and say what they add (`Add a page for sticky list headers`); this repository is the demo's
+5. Commits here are small and say what they add (`Add a page for sticky list headers`); this repository is the lab's
    own, never NSH's.

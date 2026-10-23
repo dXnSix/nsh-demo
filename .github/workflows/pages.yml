@@ -1,12 +1,12 @@
-# Builds the demo for the web and serves it on GitHub Pages: on every push to
+# Builds the lab for the web and serves it on GitHub Pages: on every push to
 # main, and by hand (Actions → Pages → Run workflow, optionally with another
 # NSH branch or commit).
 #
 # As locally, the `nsh` binary decides which NSH is tested: this builds
 # `nsh-cli` from NSH_REPO at NSH_REF, then `nsh package --target web`, which
 # compiles the web runtime (wasm) in that same checkout. The site is
-# `output/NSH Demo/` (index.html and files named by their content, with
-# relative paths, so it works under /nsh-demo/).
+# `output/NSH Lab/` (index.html and files named by their content, with
+# relative paths, so it works under /nsh-lab/).
 
 name: Pages
 
@@ -31,7 +31,7 @@ concurrency:
 
 env:
   NSH_REPO: dXnSix/nsh
-  # The NSH the demo's pages are written against: the fork's main, which has
+  # The NSH the lab's pages are written against: the fork's main, which has
   # the Tailwind and shader work the pages show.
   NSH_REF: main
 
@@ -40,11 +40,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Side by side: `nsh test` finds `*.test.tsx` anywhere under the app, so
-      # NSH's own examples must not sit inside the demo.
-      - name: Check out the demo
+      # NSH's own examples must not sit inside the lab.
+      - name: Check out the lab
         uses: actions/checkout@v4
         with:
-          path: demo
+          path: lab
 
       - name: Check out NSH
         uses: actions/checkout@v4
@@ -78,21 +78,21 @@ jobs:
           echo "AR_wasm32_unknown_unknown=/usr/bin/llvm-ar" >> "$GITHUB_ENV"
 
       - name: Type check
-        working-directory: demo
+        working-directory: lab
         run: $NSH check .
 
       - name: Test
-        working-directory: demo
+        working-directory: lab
         run: $NSH test .
 
       - name: Package for the web
-        working-directory: demo
+        working-directory: lab
         run: $NSH package --target web -o output .
 
       - name: Upload the site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: demo/output/NSH Demo
+          path: lab/output/NSH Lab
 
   deploy:
     needs: build
